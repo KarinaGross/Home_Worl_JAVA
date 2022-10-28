@@ -64,14 +64,15 @@ class Solution {
         for (int i = 0; i < board.length; i++) {
             StringBuilder sb = new StringBuilder();
             for (int j = 0; j < board.length; j++) {
-                // if (board[i][j] == 0) {
-                //     sb.append('.');
-                // } else {
-                //     sb.append('Q');
-                // }
-                sb.append(board[i][j] == 0 ? '.' : 'Q');
+                if (board[i][j] == 0) {
+                    sb.append('.');
+                } else {
+                    sb.append('Q');
+                }
+                // sb.append(board[i][j] == 0 ? '.' : 'Q');
             }
             b.add(sb.toString());
         }
+        ans.add(b);
     }
 }
