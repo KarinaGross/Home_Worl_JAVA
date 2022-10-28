@@ -11,7 +11,7 @@ import java.util.List;
 public class Task_001 {
     public static void main(String[] args) {
         Solution sol = new Solution();
-        List<List<Integer>> result = sol.solvedHorse(4);
+        List<List<String>> result = sol.solvedHorse(4);
         System.out.println(result);
     }
 
@@ -19,57 +19,77 @@ public class Task_001 {
 
 class Solution {
     int[][] board;
-    List<List<Integer>> ans = new ArrayList<>();
+    List<List<String>> ans = new ArrayList<>();
     int[][] moves = { { 1, 2 }, { -1, 2 }, { 1, -2 }, { -1, -2 },
             { 2, 1 }, { -2, 1 }, { 2, -1 }, { -2, -1 } };
     int count = 1;
 
-    public List<List<Integer>> solvedHorse(int n) {
+    public List<List<String>> solvedHorse(int n) {
         board = new int[n][n];
-        backtrack(0, 0);
+        backtrack(0, 0, 1);
         return ans;
     }
 
-    private void backtrack(int newRow, int newCol) {
-        if (board[newRow][newCol] != 0) {
+    private void backtrack(int row, int col, int count) {
+        if (row == board.length && col == board.length) {
             addBoard();
             return;
         }
 
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                
-            }
-            
-        }
-
         for (int[] move : moves) {
-            int row = newRow + move[0];
-            int col = newCol + move[1];
-
-            if (canPlace(newRow, newCol)) { // не понимаю как менять точку отсчета
-                board[row][col] = count; // проблема с индексом (-1)
-                count++;
-                backtrack(row, col);
+            int newRow = row + move[0];
+            int newCol = col + move[1];
+            if (canPlace(row, col)) {
+                board[row][col] = count;
+                backtrack(newRow, newCol, count + 1);
                 board[row][col] = 0;
-                count--;
             }
         }
+
+        // for (int row = 0; row < board.length; row++) {
+        // if (canPlace(row, newCol)) {
+        // board[row][newCol] = count;
+        // backtrack(newCol + 1, count + 1);
+        // board[row][newCol] = 0;
+        // }
+        // }
+
+        // for (int[] move : moves) {
+        // int row = newRow + move[0];
+        // int col = newCol + move[1];
+
+        // if (canPlace(newRow, newCol)) { // не понимаю как менять точку отсчета
+        // board[row][col] = count; // проблема с индексом (-1)
+        // count++;
+        // backtrack(row, col);
+        // board[row][col] = 0;
+        // count--;
+        // }
+        // }
 
     }
 
     private boolean canPlace(int i, int j) {
-        for (int[] move : moves) {
-            int newRow = i + move[0];
-            int newCol = j + move[1];
+        // for (int[] move : moves) {
+        // int newRow = i + move[0];
+        // int newCol = j + move[1];
 
-            if (newRow >= 0 && newRow < board.length && newCol >= 0 &&
-                    newCol < board.length && board[newRow][newCol] == 0) {
-                return true;
-            }
+        // if (newRow >= 0 && newRow < board.length && newCol >= 0 &&
+        // newCol < board.length) {
+        // if (board[newRow][newCol] != 0) {
+        // return false;
+        // } else {
+        // return true;
+        // }
+        // }
+
+        if (i >= 0 && i < board.length && j >= 0 &&
+                j < board.length && board[i][j] == 0) {
+            return true;
+        } else {
+            return false;
         }
-
-        return false;
+        // }
     }
 
     private void addBoard() {
@@ -77,14 +97,11 @@ class Solution {
         for (int i = 0; i < board.length; i++) {
             StringBuilder sb = new StringBuilder();
             for (int j = 0; j < board.length; j++) {
-                // if (board[i][j] == 0) {
-                // sb.append('.');
-                // } else {
-                // sb.append('Q');
-                // }
-                sb.append(board[i][j]);
+                sb.append(String.valueOf(board[i][j]));
+                sb.append(" ");
             }
             b.add(sb.toString());
         }
+        ans.add(b);
     }
 }
