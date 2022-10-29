@@ -22,16 +22,24 @@ class Solution {
     List<List<String>> ans = new ArrayList<>();
     int[][] moves = { { 1, 2 }, { -1, 2 }, { 1, -2 }, { -1, -2 },
             { 2, 1 }, { -2, 1 }, { 2, -1 }, { -2, -1 } };
-    int count = 1;
 
     public List<List<String>> solvedHorse(int n) {
         board = new int[n][n];
-        backtrack(0, 0, 1);
+        // backtrack(0, 0, 1);
+        btHelper(1);
         return ans;
     }
 
+    private void btHelper(int count) {
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                backtrack(i, j, count);
+            }
+        }
+    }
+
     private void backtrack(int row, int col, int count) {
-        if (row == board.length && col == board.length) {
+        if (row == board.length && col == board.length && count == 16) { // при count > 16 ответ равен []
             addBoard();
             return;
         }
@@ -46,27 +54,20 @@ class Solution {
             }
         }
 
-        // for (int row = 0; row < board.length; row++) {
-        // if (canPlace(row, newCol)) {
-        // board[row][newCol] = count;
-        // backtrack(newCol + 1, count + 1);
-        // board[row][newCol] = 0;
-        // }
+        // if (row == board.length && col == board.length && count > 16) {
+        // addBoard();
+        // return;
         // }
 
+        // if (canPlace(row, col)) {
+        // board[row][col] = count;
         // for (int[] move : moves) {
-        // int row = newRow + move[0];
-        // int col = newCol + move[1];
-
-        // if (canPlace(newRow, newCol)) { // не понимаю как менять точку отсчета
-        // board[row][col] = count; // проблема с индексом (-1)
-        // count++;
-        // backtrack(row, col);
+        // int newRow = row + move[0];
+        // int newCol = col + move[1];
+        // backtrack(newRow, newCol, count + 1);
+        // }
         // board[row][col] = 0;
-        // count--;
         // }
-        // }
-
     }
 
     private boolean canPlace(int i, int j) {
