@@ -11,7 +11,7 @@ import java.util.List;
 public class Task_001 {
     public static void main(String[] args) {
         Solution sol = new Solution();
-        List<List<String>> result = sol.solvedHorse(4);
+        List<List<String>> result = sol.solvedHorse(5);
         System.out.println(result);
     }
 
@@ -39,7 +39,7 @@ class Solution {
     }
 
     private void backtrack(int row, int col, int count) {
-        if (row == board.length && col == board.length && count == 16) { // при count > 16 ответ равен []
+        if (row == board.length && col == board.length && count > board.length * board.length) { // при count > 16 ответ равен []
             addBoard();
             return;
         }
