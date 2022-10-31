@@ -5,14 +5,15 @@ import java.util.List;
 
 public class Task_002 {
     static List<Integer> listIndex; 
-    static List<List<Integer>> ans;
+    static List<List<Integer>> combinations;
+    static List<Object> ans = new ArrayList<Object>();
     public static void main(String[] args) {
         String expr = "2? + ?5 = 69";
-        String result = expression(expr);
+        List<Object> result = expression(expr);
         System.out.println(result);
     }
 
-    public static String expression(String expr) {
+    public static List<Object> expression(String expr) {
         expr = expr.replace(" ", "");
         char[] arrayExpr = expr.toCharArray();
         listIndex = new ArrayList<>();
@@ -27,26 +28,24 @@ public class Task_002 {
 
         List<List<Integer>> comb = combine(listIndex.size());
 
-        String res = "";
+
         for (List<Integer> list : comb) {
-            if (chekout(arrayExpr, list)) {
-                res = "Решение есть";
-            } else {
-                res = "Решений нет";
-            }
+            chekout(arrayExpr, list);
         }
-        return res;
+
+        return ans;
+        
     }
 
     public static List<List<Integer>> combine(int k) {
-        ans = new ArrayList<>();
+        combinations = new ArrayList<>();
         helper(new ArrayList<>(), k);
-        return ans;
+        return combinations;
     }
 
     private static void helper(List<Integer> comb, int k) { // комбинации с повторениями
         if (comb.size() == k) {
-            ans.add(new ArrayList<>(comb));
+            combinations.add(new ArrayList<>(comb));
             return;
         }
 
@@ -57,20 +56,36 @@ public class Task_002 {
         }
     }
 
-    public static boolean chekout(char[] exprchar, List<Integer> comb) {
+    public static void chekout(char[] exprchar, List<Integer> comb) {
         for (int i = 0; i < listIndex.size(); i++) {
             int num = comb.get(i);
-            exprchar[listIndex.get(i)] = (char) num;
+            exprchar[listIndex.get(i)] = (char) (num + '0'); // нашла в интернете, как перевести int в его символьное представление
         } 
         String newexpr = String.valueOf(exprchar);
         String[] exprarray = newexpr.split("=");
 
         List<Integer> numbers = new ArrayList<>();
+
         for (String str : exprarray) {
-            int num = Integer.parseInt(str);
+            int num = Integer.valueOf(str.trim());
             numbers.add(num);
         }
+        
+        if (numbers.get(0) + numbers.get(1) == numbers.get(2)) {
+            desisions(numbers);
+        }
+        
+    }
 
-        return numbers.get(0) + numbers.get(1) == numbers.get(2);
+    public static void desisions(List<Integer> numbers) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.valueOf(numbers.get(0)));
+        sb.append("+");
+        sb.append(String.valueOf(numbers.get(1)));
+        sb.append("=");
+        sb.append(String.valueOf(numbers.get(2)));
+
+        ans.add(sb);
     }
 }
