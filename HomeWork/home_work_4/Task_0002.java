@@ -5,39 +5,39 @@ import java.util.Stack;
 public class Task_0002 {
     public static void main(String[] args) {
         String[] tokens = new String[] {"4","13","5","/","+"};
-        Solution sol = new Solution();
+        Sol sol = new Sol();
         int result = sol.evalRPN(tokens);
         System.out.println(result);
     }
 }
 
-class Solution {
+class Sol {
     public int evalRPN(String[] tokens) {
-        Stack<String> numbers = new Stack<>();
+        Stack<Integer> numbers = new Stack<>();
         for (String item : tokens) {
             if ("+".equals(item)) {
-                int a = Integer.valueOf(numbers.pop());
-                int b = Integer.valueOf(numbers.pop());
-                numbers.push(String.valueOf(a + b));
+                int a = numbers.pop();
+                int b = numbers.pop();
+                numbers.push(a + b);
             }
             else if ("-".equals(item)) {
-                int a = Integer.valueOf(numbers.pop());
-                int b = Integer.valueOf(numbers.pop());
-                numbers.push(String.valueOf(b - a));
+                int a = numbers.pop();
+                int b = numbers.pop();
+                numbers.push(b - a);
             }
             else if ("*".equals(item)) {
-                int a = Integer.valueOf(numbers.pop());
-                int b = Integer.valueOf(numbers.pop());
-                numbers.push(String.valueOf(a * b));
+                int a = numbers.pop();
+                int b = numbers.pop();
+                numbers.push(a * b);
             }
             else if ("/".equals(item)) {
-                int a = Integer.valueOf(numbers.pop());
-                int b = Integer.valueOf(numbers.pop());
-                numbers.push(String.valueOf(b / a));
+                int a = numbers.pop();
+                int b = numbers.pop();
+                numbers.push(b / a);
             } else {
-                numbers.push(item);
+                numbers.push(Integer.valueOf(item));
             }
         }
-        return Integer.valueOf(numbers.pop());
+        return numbers.pop();
     }
 }
