@@ -25,72 +25,45 @@ class Solution {
 
     public List<List<String>> solvedHorse(int n) {
         board = new int[n][n];
-        // backtrack(0, 0, 1);
-        btHelper(1);
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                backtrack(i, j, 1);
+            }
+        }
+
         return ans;
     }
 
-    private void btHelper(int count) {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                backtrack(i, j, count);
-            }
-        }
-    }
-
+    // работает с повторениями
     private void backtrack(int row, int col, int count) {
-        if (row == board.length && col == board.length && count > board.length * board.length) { // при count > 16 ответ равен []
-            addBoard();
+
+        if (count > board.length * board.length - 1) {
+            if (canPlace(row, col)) {
+                board[row][col] = count;
+                addBoard();
+                board[row][col] = 0;
+            }
             return;
         }
 
         for (int[] move : moves) {
-            int newRow = row + move[0];
-            int newCol = col + move[1];
             if (canPlace(row, col)) {
                 board[row][col] = count;
+                int newRow = row + move[0];
+                int newCol = col + move[1];
                 backtrack(newRow, newCol, count + 1);
                 board[row][col] = 0;
             }
         }
-
-        // if (row == board.length && col == board.length && count > 16) {
-        // addBoard();
-        // return;
-        // }
-
-        // if (canPlace(row, col)) {
-        // board[row][col] = count;
-        // for (int[] move : moves) {
-        // int newRow = row + move[0];
-        // int newCol = col + move[1];
-        // backtrack(newRow, newCol, count + 1);
-        // }
-        // board[row][col] = 0;
-        // }
     }
 
     private boolean canPlace(int i, int j) {
-        // for (int[] move : moves) {
-        // int newRow = i + move[0];
-        // int newCol = j + move[1];
-
-        // if (newRow >= 0 && newRow < board.length && newCol >= 0 &&
-        // newCol < board.length) {
-        // if (board[newRow][newCol] != 0) {
-        // return false;
-        // } else {
-        // return true;
-        // }
-        // }
-
         if (i >= 0 && i < board.length && j >= 0 &&
                 j < board.length && board[i][j] == 0) {
             return true;
         } else {
             return false;
         }
-        // }
     }
 
     private void addBoard() {
